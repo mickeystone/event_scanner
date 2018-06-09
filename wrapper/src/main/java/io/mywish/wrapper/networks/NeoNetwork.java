@@ -1,6 +1,5 @@
 package io.mywish.wrapper.networks;
 
-import io.mywish.neocli4j.Block;
 import io.mywish.neocli4j.NeoClient;
 import io.mywish.wrapper.WrapperNetwork;
 import io.mywish.wrapper.WrapperTransactionReceipt;
@@ -45,7 +44,7 @@ public class NeoNetwork extends WrapperNetwork {
     private void init() throws Exception {
         for (ContractEventBuilder<?> eventBuilder: builders) {
             if (definitionsByName.containsKey(eventBuilder.getDefinition().getName())) {
-                throw new Exception("Duplicate builder " + eventBuilder.getClass() + " with signature " + eventBuilder.getDefinition().getName());
+                throw new Exception("Duplicate builder " + eventBuilder.getClass() + " with name " + eventBuilder.getDefinition().getName());
             }
             definitionsByName.put(
                     eventBuilder

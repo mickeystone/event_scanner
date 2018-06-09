@@ -3,8 +3,10 @@ package io.mywish.wrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neemre.btcdcli4j.core.client.BtcdClientImpl;
 import io.lastwill.eventscan.model.NetworkType;
+import io.mywish.eoscli4j.EosClientImpl;
 import io.mywish.neocli4j.NeoClientImpl;
 import io.mywish.wrapper.networks.BtcNetwork;
+import io.mywish.wrapper.networks.EosNetwork;
 import io.mywish.wrapper.networks.NeoNetwork;
 import io.mywish.wrapper.networks.Web3Network;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -144,6 +146,40 @@ public class WrapperModule {
         return new NeoNetwork(
                 NetworkType.NEO_TESTNET,
                 new NeoClientImpl(
+                        closeableHttpClient,
+                        rpc,
+                        objectMapper
+                )
+        );
+    }
+
+    @ConditionalOnProperty(name = "etherscanner.eos.rpc-url.mainnet")
+    @Bean(name = NetworkType.EOS_MAINNET_VALUE)
+    public EosNetwork eosNetMain(
+            final CloseableHttpClient closeableHttpClient,
+            final ObjectMapper objectMapper,
+            final @Value("${etherscanner.eos.rpc-url.mainnet}") URI rpc
+    ) {
+        return new EosNetwork(
+                NetworkType.EOS_MAINNET,
+                new EosClientImpl(
+                        closeableHttpClient,
+                        rpc,
+                        objectMapper
+                )
+        );
+    }
+
+    @ConditionalOnProperty(name = "etherscanner.eos.rpc-url.testnet")
+    @Bean(name = NetworkType.EOS_TESTNET_VALUE)
+    public EosNetwork eosNetTest(
+            final CloseableHttpClient closeableHttpClient,
+            final ObjectMapper objectMapper,
+            final @Value("${etherscanner.eos.rpc-url.testnet}") URI rpc
+    ) {
+        return new EosNetwork(
+                NetworkType.EOS_TESTNET,
+                new EosClientImpl(
                         closeableHttpClient,
                         rpc,
                         objectMapper
